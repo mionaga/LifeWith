@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const Post = require('./models/post');
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/lifeWithCat'
 mongoose.connect( dbUrl,
@@ -26,6 +27,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.get('/', (req, res) => {
     res.render('home');
 });
+
+app.get('/posts', async(req, res) => {
+    const posts = await Post.find({});
+    res.render('posts/index', {posts})
+})
 
 app.listen(3000, () => {
     console.log('ポート3000でリクエスト待受中...');
